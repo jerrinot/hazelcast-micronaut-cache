@@ -8,8 +8,14 @@ import io.micronaut.runtime.ApplicationConfiguration;
  * {@link CacheConfiguration} implementation for Hazelcast caches.
  *
  */
-public class HazelcastCacheConfiguration extends CacheConfiguration{
+public class HazelcastCacheConfiguration  {
+    private final String cacheName;
+
     protected HazelcastCacheConfiguration(String cacheName, ApplicationConfiguration applicationConfiguration) {
-        super(cacheName, applicationConfiguration);
+        this.cacheName = cacheName;
+    }
+
+    public String getCacheName() {
+        return cacheName;
     }
 }
