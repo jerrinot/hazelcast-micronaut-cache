@@ -20,7 +20,7 @@ import javax.inject.Singleton;
  * and created as singleton.
  *
  */
-@Requires(beans = HazelcastInstanceConfiguration.class)
+//@Requires(beans = HazelcastInstanceConfiguration.class)
 @Singleton
 @Factory
 public class HazelcastInstanceFactory {
@@ -38,31 +38,32 @@ public class HazelcastInstanceFactory {
     @Singleton
     @Primary
     @Context
-    public HazelcastInstance hazelcastInstance(@Primary HazelcastInstanceConfiguration hazelcastInstanceConfiguration) {
-        String configMessage = "the classpath";
-        boolean configuredAsClient = hazelcastInstanceConfiguration.isClient();
-        String xmlConfigPath = hazelcastInstanceConfiguration.getXmlConfigPath();
-        ClientConfig clientConfig = null;
-        Config config = null;
-
-        if (xmlConfigPath != null && !xmlConfigPath.isEmpty()) {
-            try {
-                if (configuredAsClient) {
-                    clientConfig = new XmlClientConfigBuilder(xmlConfigPath).build();
-                }else {
-                    config = new XmlConfigBuilder(xmlConfigPath).build();
-                }
-                configMessage = "the configured XML path: " + xmlConfigPath;
-            } catch (Exception e) {
-                log.warning("Exception when loading the configuration from the configured XML path: " + xmlConfigPath, e);
-            }
-        } else {
-            log.warning("Configuration XML path is empty.");
-        }
-
-        log.info("Hazelcast is starting with using the configuration in " + configMessage);
-        return configuredAsClient ?
-                HazelcastClient.newHazelcastClient(clientConfig) :
-                Hazelcast.newHazelcastInstance(config);
+    public HazelcastInstance hazelcastInstance() {
+        return Hazelcast.newHazelcastInstance();
+//        String configMessage = "the classpath";
+//        boolean configuredAsClient = hazelcastInstanceConfiguration.isClient();
+//        String xmlConfigPath = hazelcastInstanceConfiguration.getXmlConfigPath();
+//        ClientConfig clientConfig = null;
+//        Config config = null;
+//
+//        if (xmlConfigPath != null && !xmlConfigPath.isEmpty()) {
+//            try {
+//                if (configuredAsClient) {
+//                    clientConfig = new XmlClientConfigBuilder(xmlConfigPath).build();
+//                }else {
+//                    config = new XmlConfigBuilder(xmlConfigPath).build();
+//                }
+//                configMessage = "the configured XML path: " + xmlConfigPath;
+//            } catch (Exception e) {
+//                log.warning("Exception when loading the configuration from the configured XML path: " + xmlConfigPath, e);
+//            }
+//        } else {
+//            log.warning("Configuration XML path is empty.");
+//        }
+//
+//        log.info("Hazelcast is starting with using the configuration in " + configMessage);
+//        return configuredAsClient ?
+//                HazelcastClient.newHazelcastClient(clientConfig) :
+//                Hazelcast.newHazelcastInstance(config);
     }
 }

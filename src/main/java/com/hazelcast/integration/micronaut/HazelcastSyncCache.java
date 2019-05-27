@@ -2,11 +2,12 @@ package com.hazelcast.integration.micronaut;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.integration.micronaut.configuration.HazelcastCacheConfiguration;
+import com.hazelcast.integration.micronaut.configuration.HazelcastProperty;
 import com.hazelcast.integration.micronaut.util.TypeUtils;
 import io.micronaut.cache.AsyncCache;
 import io.micronaut.cache.SyncCache;
-import io.micronaut.context.annotation.EachBean;
+import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.core.type.Argument;
 
@@ -18,20 +19,16 @@ import java.util.function.Supplier;
  * The implementation of {@link SyncCache} for Hazelcast. It uses {@link IMap} as cache backend and works for both
  * client and embedded setup of Hazelcast.
  *
- * Its bean is created for each {@link HazelcastCacheConfiguration} bean in the context.
- *
  */
-@EachBean(HazelcastCacheConfiguration.class)
-@Primary
+//@EachProperty(HazelcastProperty.CACHES)
+//@Primary
 public class HazelcastSyncCache implements SyncCache<IMap<?, ?>>{
 
-    private final HazelcastCacheConfiguration cacheConfiguration;
     private final IMap<Object, Object> map;
 
-    public HazelcastSyncCache(HazelcastCacheConfiguration cacheConfiguration,
+    public HazelcastSyncCache(@Parameter String name,
                               HazelcastInstance hazelcastInstance) {
-        this.cacheConfiguration = cacheConfiguration;
-        map = hazelcastInstance.getMap(cacheConfiguration.getCacheName());
+        map = hazelcastInstance.getMap(name);
     }
 
     @Override
@@ -98,7 +95,7 @@ public class HazelcastSyncCache implements SyncCache<IMap<?, ?>>{
 
     @Override
     public String getName() {
-        return cacheConfiguration.getCacheName();
+        return map.getName();
     }
 
     @Override

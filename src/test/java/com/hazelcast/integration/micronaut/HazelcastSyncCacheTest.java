@@ -8,6 +8,7 @@ import com.hazelcast.integration.micronaut.HazelcastSyncCache;
 import com.hazelcast.integration.micronaut.SomeKey;
 import com.hazelcast.integration.micronaut.SomeValue;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.runtime.Micronaut;
 import org.junit.*;
 
@@ -31,7 +32,8 @@ public class HazelcastSyncCacheTest {
     @BeforeClass
     public static void setupServer() {
         applicationContext = Micronaut.run("-Dhazelcast.caches." + cacheName + ".enabled=true");
-        hazelcastSyncCache = applicationContext.getBean(HazelcastSyncCache.class);
+//        hazelcastSyncCache = applicationContext.createBean(HazelcastSyncCache.class, Qualifiers.byName("myMap"));
+        hazelcastSyncCache = applicationContext.createBean(HazelcastSyncCache.class, "myMap");
         client = HazelcastClient.newHazelcastClient();
     }
 

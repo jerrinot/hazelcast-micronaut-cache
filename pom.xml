@@ -21,8 +21,8 @@
     </build>
 
     <properties>
-        <micronaut.version>1.0.3</micronaut.version>
-        <hazelcast.version>3.11</hazelcast.version>
+        <micronaut.version>1.1.2</micronaut.version>
+        <hazelcast.version>3.12</hazelcast.version>
     </properties>
 
     <dependencies>
